@@ -43,14 +43,14 @@ function Report() {
   return (
     <Layout>
       <React.Fragment>
-        <Box sx={{  height: '100vh'  ,mt: 2}}>
+        {/* <Box sx={{  height: '100vh'  ,mt: 2}}>
         
           <Container maxWidth="lg">
             <Box sx={{ flexGrow: 1}}>
              
             </Box>
           </Container>
-        </Box>
+        </Box> */}
       </React.Fragment>
     </Layout>
   );

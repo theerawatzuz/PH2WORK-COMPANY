@@ -89,7 +89,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AccountBoxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Account" />
+                <ListItemText primary="บัญชี" />
                 {accountOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -118,7 +118,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <ManageAccountsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Manage Members" />
+                <ListItemText primary="จัดการสมาชิก" />
                 {manageMemberOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -157,7 +157,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AssessmentIcon />
                 </ListItemIcon>
-                <ListItemText primary="Report" />
+                <ListItemText primary="รายงาน" />
                 {reportOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -186,7 +186,7 @@ export default function LeftNav() {
       </Drawer>
 
       {/* Page Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 , bgcolor: '#fafbfb', height: '100vh'}}>
         <Toolbar />
         {selectedContent === 'Dashboard' && <Dashboard />}
         {selectedContent === 'History' && <History />}

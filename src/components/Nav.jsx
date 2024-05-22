@@ -50,7 +50,9 @@ export default function MenuAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar>
         <Toolbar>
-          <IconButton
+
+          {/* icon button here */}
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -58,7 +60,8 @@ export default function MenuAppBar() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
+
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <Typography variant="h6" component="div">
               Business name
@@ -67,7 +70,7 @@ export default function MenuAppBar() {
             <AccountBalanceWalletIcon sx={{ color: 'white' ,width: 20, mr:1}} />
             {balance} {currency}
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
             <img src={flagIcon} alt="Flag" style={{ width: 24, height: 24, marginRight: 8 }} />
             <IconButton
               size="large"
@@ -97,7 +100,7 @@ export default function MenuAppBar() {
           >
             <MenuItem onClick={() => handleClose1('THAI')}>ไทย</MenuItem>
             <MenuItem onClick={() => handleClose1('UK')}>English</MenuItem>
-          </Menu>
+          </Menu> */}
           <Divider orientation="vertical" flexItem sx={{ height: 28, alignSelf: 'center', mx: 1, bgcolor: 'white' }} />
           <IconButton
             size="large"
@@ -113,6 +116,7 @@ export default function MenuAppBar() {
             {username}
           </Typography>
           <Menu
+           sx={{ mt: '40px' }}
             id="menu-appbar"
             anchorEl={anchorEl2}
             anchorOrigin={{
