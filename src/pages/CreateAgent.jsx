@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
@@ -34,6 +34,17 @@ function CreateAgent() {
     event.preventDefault();
   };
 
+
+
+  //Generate Password
+    const [password, setPassword] = useState('');
+
+    const GeneratePassword = () => {
+      const randomPassword = Math.random().toString(36).slice(2,10);
+      setPassword(randomPassword);
+    };
+
+
   return (
     <Box sx={{ gap: 3}}>
     <Typography variant="h4">
@@ -54,7 +65,9 @@ function CreateAgent() {
             noValidate
             autoComplete="off"
           >
-            <TextField sx={{ m: 1, width: 2/4 }} id="username" label="username" variant="outlined" margin="normal"/>
+            <TextField sx={{ m: 1, width: 2/4 }} id="username" label="username" variant="outlined" margin="normal"
+              inputProps={{ maxLength: 100 }}
+            />
             <FormControl sx={{ m: 1, width: 2/4 }} variant="outlined" margin="normal">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
@@ -73,13 +86,16 @@ function CreateAgent() {
                   </InputAdornment>
                 }
                 label="Password"
+                value={password}
               />
             </FormControl>
 
             {/* <IconButton color="primary" variant="contained" aria-label="generate">
             <AutoAwesomeIcon />
           </IconButton> */}
-          <Button variant="contained" color="success">
+          <Button variant="contained" color="success"
+          onClick={GeneratePassword}
+          >
             generate
           </Button>
             {/* <Button variant="contained" color="success">Generate</Button> */}
@@ -95,7 +111,9 @@ function CreateAgent() {
             noValidate
             autoComplete="off"
           >          
-            <TextField sx={{ m: 1, width: 2/4 }} id="displayname" label="Display Name" variant="outlined" margin="normal" />
+            <TextField sx={{ m: 1, width: 2/4 }} id="displayname" label="Display Name" variant="outlined" margin="normal" 
+            inputProps={{ maxLength: 300 }}
+            />
             <TextField sx={{ m: 1, width: 2/4 }} id="prefixname" label="Prefix Name" variant="outlined" margin="normal" helperText="Maximum 3 letters"
             inputProps={{ maxLength: 3 }}
             />
