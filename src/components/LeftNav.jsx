@@ -118,7 +118,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <ManageAccountsIcon />
                 </ListItemIcon>
-                <ListItemText primary="จัดการสมาชิก" />
+                <ListItemText primary="Agent" />
                 {manageMemberOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
