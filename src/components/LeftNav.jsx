@@ -89,7 +89,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AccountBoxIcon />
                 </ListItemIcon>
-                <ListItemText primary="บัญชี" />
+                <ListItemText primary="หน้าหลัก" />
                 {accountOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -118,7 +118,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <ManageAccountsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Agent" />
+                <ListItemText primary="จัดการผู้เล่น" />
                 {manageMemberOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -157,7 +157,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AssessmentIcon />
                 </ListItemIcon>
-                <ListItemText primary="รายงาน" />
+                <ListItemText primary="รายงาน แพ้/ชนะ" />
                 {reportOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -165,12 +165,12 @@ export default function LeftNav() {
               <List component="div" disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('LoseWinMembers')}>
-                    <ListItemText primary="Lose/win Members" />
+                    <ListItemText primary="แพ้ชนะ ผู้เล่น" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('LoseWinProvider')}>
-                    <ListItemText primary="Lose/win Provider" />
+                    <ListItemText primary="แพ้ชนะ ตามค่าย" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
