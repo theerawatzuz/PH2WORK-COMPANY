@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+import TableFooter from '@mui/material/TableFooter';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -38,6 +39,15 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderButtom: `1px solid ${theme.palette.divider}`,
     borderTop: `1px solid ${theme.palette.divider}`,
   },
+  [`&.${tableCellClasses.footer}`]: {
+    fontSize: 14,
+    color: theme.palette.common.black,
+    borderRight: `1px solid ${theme.palette.divider}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderButtom: `1px solid ${theme.palette.divider}`,
+    borderTop: `1px solid ${theme.palette.divider}`,
+    fontWeight: `bold`,
+  },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -45,9 +55,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: theme.palette.action.hover,
   },
   // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
+  // '&:last-child td, &:last-child th': {
+  //   border: 0,
+  // },
 }));
 
 function createData(num, provider, amount, realAmount, winloseRate, houseEdge, memberWinlose, memberCom, memberSum, providerWinlose, providerCom, providerSum, ambaapiWinlose, ambapiCom, ambapiSum) {
@@ -156,6 +166,32 @@ function LoseWinProvider() {
             </StyledTableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow sx={{bgcolor: 'grey.400'}}>
+            <StyledTableCell align="center" colSpan={6}>รวม (บาท)</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก รวม</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก ยอดรวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท ชนะ/แพ้ รวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท ยอดรวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api ชนะ/แพ้ รวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api ยอดรวม</StyledTableCell>
+          </TableRow>
+          <TableRow sx={{bgcolor: 'grey.500'}}>
+            <StyledTableCell align="center" colSpan={6}>รวม (ดอลล่าห์)</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก รวม</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">สมาชิก ยอดรวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท ชนะ/แพ้ รวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">บริษัท ยอดรวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api ชนะ/แพ้ รวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api คอม รวม</StyledTableCell>
+            <StyledTableCell align="right">Amb Api ยอดรวม</StyledTableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
     </Box>
