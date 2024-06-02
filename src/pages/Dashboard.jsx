@@ -4,9 +4,15 @@ import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 import { Divider } from '@mui/material';
 import Button from '@mui/material/Button';
+
+//Tab
+import TabSport1 from './DashboardTabPages/TabSport1'
 
 
 //icon
@@ -22,12 +28,16 @@ const userStatus = "Enabled"
 const currentAmount = "0.00"
 
 const Dashboard = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState('1');
+  const [nestedValue, setNestedValue] = React.useState('1.1');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleNestedChange = (event, newValue) => {
+    setNestedValue(newValue);
+  };
 
   return (
     <Box sx={{ gap: 3, bgcolor:'background.paper'}}>
@@ -154,12 +164,32 @@ const Dashboard = () => {
     
         </Box>
         {/* BODY */}
-        <Box sx={{width: '100%', boxShadow: 1 , mt: 2, p: 2}}>
-        <Tabs value={value} onChange={handleChange}>
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
-      </Tabs>
+        <Box sx={{ width: '100%', boxShadow: 1, mt: -1, p: 2 }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Item One" value="1" />
+            <Tab label="Item Two" value="2" />
+            <Tab label="Item Three" value="3" />
+          </TabList>
+        </Box>
+        <TabPanel value="1" sx={{mt: 0, p: 0}}>
+          <TabContext value={nestedValue}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+              <TabList onChange={handleNestedChange} aria-label="lab API tabs example">
+                <Tab label="Item 1.1" value="1.1" />
+                <Tab label="Item 1.2" value="1.2" />
+                <Tab label="Item 1.3" value="1.3" />
+              </TabList>
+            </Box>
+            <TabPanel value="1.1" sx={{mt: 2, p: 0}}><TabSport1/></TabPanel>
+            <TabPanel value="1.2">Item 1.2</TabPanel>
+            <TabPanel value="1.3">Item 1.3</TabPanel>
+          </TabContext>
+        </TabPanel>
+        <TabPanel value="2">Item Two</TabPanel>
+        <TabPanel value="3">Item Three</TabPanel>
+      </TabContext>
         </Box>
       </Box>
 
