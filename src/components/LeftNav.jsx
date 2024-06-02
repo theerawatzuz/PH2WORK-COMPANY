@@ -32,6 +32,7 @@ import ListNameAgent from '../pages/ListNameAgent'
 import CopyMember from '../pages/CopyMember'
 import LoseWinMembers from '../pages/LoseWinMembers'
 import LoseWinProvider from '../pages/LoseWinProvider'
+import Managemember from '../pages/Managemember'
 
 
 const drawerWidth = 240;
@@ -118,7 +119,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <ManageAccountsIcon />
                 </ListItemIcon>
-                <ListItemText primary="จัดการผู้เล่น" />
+                <ListItemText primary="การจัดการ" />
                 {manageMemberOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
@@ -126,22 +127,27 @@ export default function LeftNav() {
               <List component="div" disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                  <ListItemButton onClick={() => handleMenuClick('CreateAgent')}>
-                    <ListItemText primary="Create Agent" />
+                    <ListItemText primary="สร้างเอเย่นต์" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('CreateMembers')}>
-                    <ListItemText primary="Create Member" />
+                    <ListItemText primary="สร้างสมาชิก" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('ListNameAgent')}>
-                    <ListItemText primary="List Name Agent" />
+                    <ListItemText primary="รายชื่อเอเย่นต์/สมาชิก" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('CopyMember')}>
-                    <ListItemText primary="Copy Member" />
+                    <ListItemText primary="CopyMember" />
+                  </ListItemButton>
+                </ListItem> */}
+                <ListItem sx={{ pl: 4 }} disablePadding>
+                  <ListItemButton onClick={() => handleMenuClick('Managemember')}>
+                    <ListItemText primary="จัดการผู้เล่น" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
@@ -196,6 +202,7 @@ export default function LeftNav() {
         {selectedContent === 'CopyMember' && <CopyMember />}
         {selectedContent === 'LoseWinMembers' && <LoseWinMembers />}
         {selectedContent === 'LoseWinProvider' && <LoseWinProvider />}
+        {selectedContent === 'Managemember' && <Managemember />}
       </Box>
     </Box>
   );

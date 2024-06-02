@@ -53,7 +53,7 @@ const Dashboard = () => {
               <Divider orientation="vertical" flexItem sx={{ height: 28, alignSelf: 'center', mx: 1, bgcolor: 'white' }} />
             
             <Button size="small" variant="contained" startIcon={<PasswordIcon />} sx={{mx:1}}>เปลี่ยนรหัส</Button>
-            <Button size="small" variant="contained" color="success" startIcon={<KeyIcon />} sx={{mx:1}}>เปลี่ยนพาสโค้ด</Button>
+            {/* <Button size="small" variant="contained" color="success" startIcon={<KeyIcon />} sx={{mx:1}}>เปลี่ยนพาสโค้ด</Button> */}
             <Typography variant="body1">
                 สถานะ :
               </Typography>

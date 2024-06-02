@@ -140,7 +140,6 @@ function LoseWinProvider() {
             <StyledTableCell align="center">ชนะ/แพ้</StyledTableCell>
             <StyledTableCell align="center">คอม</StyledTableCell>
             <StyledTableCell align="center">ยอดรวม</StyledTableCell>
-
           </TableRow>
         </TableHead>
         <TableBody>
