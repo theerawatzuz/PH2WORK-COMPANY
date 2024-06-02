@@ -20,6 +20,7 @@ import Paper from '@mui/material/Paper';
 //icon
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CachedIcon from '@mui/icons-material/Cached';
 
 const UserName = "ผู้ใช้งาน"
 
@@ -91,11 +92,19 @@ function Managemember() {
             <TextField id="outlined-basic" label="กรอกชื่อผู้ใช้" variant="outlined" />
             <Button variant="contained">ค้นหา</Button>
         </Box>
+        <Box sx={{display: 'flex' , justifyContent: 'space-between'}}>
+
         <Typography variant="subtitle1">
             <Box sx={{ bgcolor: '#eeeeee', display: 'inline-block', p: 1 ,borderRadius: '10px'}}>
                 <b>ดาวไลน์ปัจจุบัน : </b> {UserName}
             </Box>
             </Typography>
+
+            ฺ<Button  startIcon={<CachedIcon />}>
+            <b>รีเซ็ต</b>
+            </Button>
+
+        </Box>
             <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
