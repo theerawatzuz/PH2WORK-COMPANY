@@ -106,11 +106,11 @@ export default function LeftNav() {
                     <ListItemText primary="History" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton>
                     <ListItemText primary="{waiting}" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
               </List>
             )}
 
@@ -130,11 +130,11 @@ export default function LeftNav() {
                     <ListItemText primary="สร้างเอเย่นต์" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('CreateMembers')}>
                     <ListItemText primary="สร้างสมาชิก" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('ListNameAgent')}>
                     <ListItemText primary="รายชื่อเอเย่นต์/สมาชิก" />
@@ -150,11 +150,11 @@ export default function LeftNav() {
                     <ListItemText primary="จัดการผู้เล่น" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton>
                     <ListItemText primary="{waiting}" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
               </List>
             )}
 
@@ -179,11 +179,11 @@ export default function LeftNav() {
                     <ListItemText primary="แพ้ชนะ ตามค่าย" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton>
                     <ListItemText primary="{waiting}" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
               </List>
             )}
             
