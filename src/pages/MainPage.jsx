@@ -38,7 +38,7 @@ import LeftNav from "../components/LeftNav";
 
 
 
-function Report() {
+function MainPage() {
 
   return (
     <Layout>
@@ -56,4 +56,4 @@ function Report() {
   );
 }
 
-export default Report;
+export default MainPage;

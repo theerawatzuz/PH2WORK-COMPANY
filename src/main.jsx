@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Report from './pages/Report.jsx'
+import MainPage from './pages/MainPage.jsx'
 import Resultreport from './pages/ResultReport.jsx'
 import theme from './themes/theme.jsx'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from './auth/LoginPage.jsx'
 
 const router = createBrowserRouter(
   [
@@ -13,7 +14,7 @@ const router = createBrowserRouter(
       path: '/',
       element: (
         <ThemeProvider theme={theme}>
-          <Report />
+          <MainPage />
         </ThemeProvider>
       )
     },
@@ -25,17 +26,23 @@ const router = createBrowserRouter(
         </ThemeProvider>
       )
     },
+    {
+      path: '/login',
+      element: (
+        <ThemeProvider theme={theme}>
+          <LoginPage />
+        </ThemeProvider>
+      )
+    },
   ]
 )
 
 ReactDOM.render(
-  <RouterProvider router={router}>
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Report />
-      </ThemeProvider>
-    </React.StrictMode>
-  </RouterProvider>,
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </React.StrictMode>,
   document.getElementById('root')
 );

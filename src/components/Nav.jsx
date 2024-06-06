@@ -15,11 +15,13 @@ import { Divider } from '@mui/material';
 import THAI from '../assets/thailand.png';
 import UK from '../assets/united-kingdom.png';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { useNavigate } from 'react-router-dom';
 
 export default function MenuAppBar() {
   const [anchorEl1, setAnchorEl1] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [language, setLanguage] = React.useState('THAI');
+  const navigate = useNavigate();
 
   const handleMenu1 = (event) => {
     setAnchorEl1(event.currentTarget);
@@ -38,6 +40,13 @@ export default function MenuAppBar() {
 
   const handleClose2 = () => {
     setAnchorEl2(null);
+  };
+
+  const handleLogout = () => {
+   //waiting for logic
+
+    // redirect to login
+    navigate('/login');
   };
 
   const flagIcon = language === 'THAI' ? THAI : UK;
@@ -134,7 +143,7 @@ export default function MenuAppBar() {
             <MenuItem onClick={handleClose2}>Profile</MenuItem>
             <MenuItem onClick={handleClose2}>My account</MenuItem>
           </Menu>
-          <Button color="inherit">{logoutText}</Button>
+          <Button color="inherit" onClick={handleLogout}>{logoutText}</Button>
         </Toolbar>
       </AppBar>
     </Box>
