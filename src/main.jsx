@@ -1,41 +1,39 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import MainPage from './pages/MainPage.jsx'
-import Resultreport from './pages/ResultReport.jsx'
-import theme from './themes/theme.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginPage from './auth/LoginPage.jsx'
+import theme from './themes/theme.jsx';
+import MainPage from './pages/MainPage.jsx';
+import Resultreport from './pages/ResultReport.jsx';
+import LoginPage from './auth/LoginPage.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: (
-        <ThemeProvider theme={theme}>
-          <MainPage />
-        </ThemeProvider>
-      )
-    },
-    {
-      path: '/resultreport',
-      element: (
-        <ThemeProvider theme={theme}>
-          <Resultreport />
-        </ThemeProvider>
-      )
-    },
-    {
-      path: '/login',
-      element: (
-        <ThemeProvider theme={theme}>
-          <LoginPage />
-        </ThemeProvider>
-      )
-    },
-  ]
-)
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Navigate to="/login" replace />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: 'main',
+        element: <MainPage />
+      },
+      {
+        path: 'resultreport',
+        element: <Resultreport />
+      },
+      // เพิ่มเส้นทางอื่นๆ ที่ต้องการการป้องกันที่นี่
+    ]
+  }
+]);
 
 ReactDOM.render(
   <React.StrictMode>

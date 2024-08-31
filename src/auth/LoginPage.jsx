@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -6,26 +8,39 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import Alert from "@mui/material/Alert";
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const username = data.get("username");
+    const password = data.get("password");
+
+    // จำลองการตรวจสอบ
+    if (username === 'test1' && password === 'test1') {
+      // สร้าง token จำลอง
+      const fakeToken = 'fake_token_' + Math.random().toString(36).substr(2);
+      localStorage.setItem('authToken', fakeToken);
+      localStorage.setItem('userName', username)
+      // นำทางไปยังหน้า main
+      navigate('/main');
+    } else {
+      setError('ยูเซอร์เนม/เบอร์มือถือ หรือรหัสผ่านไม่ถูกต้อง');
+    }
   };
 
   return (
     <Box
       component="main"
       sx={{
-        bgcolor: '#f5f5f5',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        bgcolor: "#f5f5f5",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Box
@@ -35,21 +50,26 @@ function LoginPage() {
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-       
         }}
       >
         <Typography component="h1" variant="h4">
-          <b>Sign in</b>
+          <b>เข้าสู่ระบบ</b>
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt:4, p: 3 , boxShadow: 3, width: 4/6, bgcolor: 'white'}}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 4, p: 3, boxShadow: 3, width: 4 / 6, bgcolor: "white" }}
+        >
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address or user ID"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="ยูเซอร์เนม/เบอร์มือถือ"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField
@@ -57,14 +77,14 @@ function LoginPage() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="รหัสผ่าน"
             type="password"
             id="password"
             autoComplete="current-password"
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            label="จดจำการเข้าสู่ระบบ"
           />
           <Button
             type="submit"
@@ -72,17 +92,12 @@ function LoginPage() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            ล็อคอิน
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                ลืมรหัสผ่าน?
               </Link>
             </Grid>
           </Grid>

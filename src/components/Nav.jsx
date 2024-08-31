@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,7 +21,9 @@ export default function MenuAppBar() {
   const [anchorEl1, setAnchorEl1] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [language, setLanguage] = React.useState('THAI');
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+
 
   const handleMenu1 = (event) => {
     setAnchorEl1(event.currentTarget);
@@ -43,17 +45,20 @@ export default function MenuAppBar() {
   };
 
   const handleLogout = () => {
-   //waiting for logic
-
-    // redirect to login
+ localStorage.clear();
     navigate('/login');
   };
 
   const flagIcon = language === 'THAI' ? THAI : UK;
-  const username = language === 'THAI' ? 'ผู้ใช้งาน' : 'Username';
+  // const username = language === 'THAI' ? 'ผู้ใช้งาน' : 'Username';
   const logoutText = language === 'THAI' ? 'ออกจากระบบ' : 'Logout';
   const currency = language === 'THAI' ? 'บาท' : 'THB';
   const balance = 350
+
+  useEffect(() => {
+    const storedUserName = localStorage.getItem('userName');
+      setUserName(storedUserName);
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -122,7 +127,7 @@ export default function MenuAppBar() {
             <AccountCircle />
           </IconButton>
           <Typography variant="body2" color="inherit" sx={{ ml: 1, marginRight: 2 }}>
-            {username}
+            {userName}
           </Typography>
           <Menu
            sx={{ mt: '40px' }}
