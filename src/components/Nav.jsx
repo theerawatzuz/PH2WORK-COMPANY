@@ -78,7 +78,7 @@ export default function MenuAppBar() {
 
           <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
             <Typography variant="h6" component="div">
-              Business name
+              RYG Company
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ height: 28, alignSelf: 'center', mx: 1, bgcolor: 'white' }} />
             <AccountBalanceWalletIcon sx={{ color: 'white' ,width: 20, mr:1}} />
