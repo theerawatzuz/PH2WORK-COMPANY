@@ -98,12 +98,12 @@ export default function LeftNav() {
               <List component="div" disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('Dashboard')}>
-                    <ListItemText primary="Dashboard" />
+                    <ListItemText primary="ภาพรวม" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('History')}>
-                    <ListItemText primary="History" />
+                    <ListItemText primary="ประวัติ" />
                   </ListItemButton>
                 </ListItem>
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
@@ -127,7 +127,7 @@ export default function LeftNav() {
               <List component="div" disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                  <ListItemButton onClick={() => handleMenuClick('CreateAgent')}>
-                    <ListItemText primary="สร้างเอเย่นต์" />
+                    <ListItemText primary="สร้าง" />
                   </ListItemButton>
                 </ListItem>
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
@@ -137,7 +137,7 @@ export default function LeftNav() {
                 </ListItem> */}
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('ListNameAgent')}>
-                    <ListItemText primary="รายชื่อเอเย่นต์/สมาชิก" />
+                    <ListItemText primary="รายชื่อ Master" />
                   </ListItemButton>
                 </ListItem>
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
@@ -147,7 +147,7 @@ export default function LeftNav() {
                 </ListItem> */}
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('Managemember')}>
-                    <ListItemText primary="จัดการผู้เล่น" />
+                    <ListItemText primary="จัดการ" />
                   </ListItemButton>
                 </ListItem>
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
@@ -163,7 +163,7 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AssessmentIcon />
                 </ListItemIcon>
-                <ListItemText primary="รายงาน แพ้/ชนะ" />
+                <ListItemText primary="รายงานการใช้เครดิต" />
                 {reportOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>

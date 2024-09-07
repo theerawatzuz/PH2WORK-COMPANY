@@ -85,7 +85,7 @@ function ListNameAgent() {
   return (
     <Box sx={{ gap: 2, display :'flex', flexDirection: 'column', bgcolor:'background.paper'}}>
       <Typography variant="h4">
-        รายชื่อเอเย่นต์/สมาชิก
+        รายชื่อ Master
       </Typography>
       <Box sx={{bgcolor: 'white', p: 2, boxShadow: 1, gap: 2, display: 'flex', flexDirection: 'column'}}>
         <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>

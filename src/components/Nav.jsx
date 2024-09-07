@@ -53,7 +53,7 @@ export default function MenuAppBar() {
   // const username = language === 'THAI' ? 'ผู้ใช้งาน' : 'Username';
   const logoutText = language === 'THAI' ? 'ออกจากระบบ' : 'Logout';
   const currency = language === 'THAI' ? 'บาท' : 'THB';
-  const balance = 350
+  const balance = 24445313
 
   useEffect(() => {
     const storedUserName = localStorage.getItem('userName');
@@ -82,7 +82,7 @@ export default function MenuAppBar() {
             </Typography>
             <Divider orientation="vertical" flexItem sx={{ height: 28, alignSelf: 'center', mx: 1, bgcolor: 'white' }} />
             <AccountBalanceWalletIcon sx={{ color: 'white' ,width: 20, mr:1}} />
-            {balance} {currency}
+            {balance.toLocaleString()} {currency}
           </Box>
           {/* <Box sx={{ display: 'flex', alignItems: 'center', marginRight: 2 }}>
             <img src={flagIcon} alt="Flag" style={{ width: 24, height: 24, marginRight: 8 }} />
