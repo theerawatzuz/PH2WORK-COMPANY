@@ -71,7 +71,7 @@ const rows = [
 ];
 
 
-function Dashboard() {
+function GuardBalanceManage() {
 
   const [selectedRow, setSelectedRow] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
 
@@ -108,7 +108,7 @@ function Dashboard() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <TextField
             id="outlined-basic"
-            label="กรอกชื่อ Master"
+            label="กรอกชื่อผู้ใช้"
             variant="outlined"
           />
           <Button variant="contained">ค้นหา</Button>
@@ -156,15 +156,13 @@ function Dashboard() {
                   </StyledTableCell>
                   <TableCell align="center">
                         <Button
-                        variant="contained"
-                          // startIcon={<VisibilityIcon />}
+                          startIcon={<VisibilityIcon />}
                           onClick={() => handleViewClick(row)}
                         >
-                          จัดการ
                         </Button>
                       </TableCell>
                   <StyledTableCell align="center">
-                    <Button variant="contained" color="success">จัดการ</Button>
+                    <Button variant="contained">จัดการ</Button>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -177,4 +175,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default GuardBalanceManage;
