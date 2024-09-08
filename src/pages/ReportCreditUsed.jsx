@@ -18,6 +18,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CachedIcon from "@mui/icons-material/Cached";
 
 import ReportCreditUsedTable from "../pages/ReportCreditUsedTable";
+import ListNameAgent from "../pages/ListNameAgent";
 
 const UserName = "ผู้ใช้งาน";
 
@@ -77,6 +78,12 @@ function ReportCreditUsed() {
     setSelectedRow({ id: row.masterName });
   };
 
+  const [selectedRowAgent, setSelectedRowAgent] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
+
+  const handleViewClickAgent = (row) => {
+    setSelectedRowAgent({ id: row.masterName, active: row.agentCount });
+  };
+
   return (
     <Box
       sx={{
@@ -91,6 +98,12 @@ function ReportCreditUsed() {
         <ReportCreditUsedTable
           id={selectedRow.id}
           onBack={() => setSelectedRow(null)}
+        />
+      ) : selectedRowAgent ? (
+        <ListNameAgent
+          id={selectedRowAgent.id}
+          active={selectedRowAgent.active}
+          onBack={() => setSelectedRowAgent(null)}
         />
       ) : (
         <Box
@@ -146,7 +159,13 @@ function ReportCreditUsed() {
                       {row.masterName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <Button variant="contained">{row.agentCount}</Button>
+                      <Button
+                        variant="contained"
+                        // startIcon={<VisibilityIcon />}
+                        onClick={() => handleViewClickAgent(row)}
+                      >
+                        {row.agentCount}
+                      </Button>
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.creditUsed}

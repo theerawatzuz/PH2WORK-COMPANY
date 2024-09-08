@@ -138,7 +138,7 @@ function LoseWinMasterTransaction({ id, onBack }) {
 
           </Box>
           <Typography variant="h4" sx={{ mt: 2 }}>
-            รายงานการเดิมพันของผู้เล่น
+            จัดการยอดถือสู้ของ Agent
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 2 }}>
             <AccountCircle />

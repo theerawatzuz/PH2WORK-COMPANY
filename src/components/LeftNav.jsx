@@ -35,6 +35,7 @@ import LoseWinProvider from '../pages/LoseWinProvider'
 import Managemember from '../pages/Managemember'
 import ReportCreditUsed from '../pages/ReportCreditUsed'
 import ListNameMaster from '../pages/ListNameMaster'
+import GuardBalanceManage from '../pages/GuardBalanceManage'
 
 
 const drawerWidth = 240;
@@ -127,11 +128,11 @@ export default function LeftNav() {
             </ListItem>
             {manageMemberOpen && (
               <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                  <ListItemButton onClick={() => handleMenuClick('CreateAgent')}>
                     <ListItemText primary="สร้าง" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('CreateMembers')}>
                     <ListItemText primary="สร้างสมาชิก" />
@@ -148,7 +149,7 @@ export default function LeftNav() {
                   </ListItemButton>
                 </ListItem> */}
                 <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('Managemember')}>
+                  <ListItemButton onClick={() => handleMenuClick('GuardBalanceManage')}>
                     <ListItemText primary="จัดการ" />
                   </ListItemButton>
                 </ListItem>
@@ -176,11 +177,11 @@ export default function LeftNav() {
                     <ListItemText primary="ยอดใช้เครดิต" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('LoseWinProvider')}>
                     <ListItemText primary="แพ้ชนะ ตามค่าย" />
                   </ListItemButton>
-                </ListItem>
+                </ListItem> */}
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton>
                     <ListItemText primary="{waiting}" />
@@ -207,6 +208,7 @@ export default function LeftNav() {
         {selectedContent === 'Managemember' && <Managemember />}
         {selectedContent === 'ReportCreditUsed' && <ReportCreditUsed />}
         {selectedContent === 'ListNameMaster' && <ListNameMaster />}
+        {selectedContent === 'GuardBalanceManage' && <GuardBalanceManage />}
       </Box>
     </Box>
   );

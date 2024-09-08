@@ -17,7 +17,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CachedIcon from "@mui/icons-material/Cached";
 
-import LoseWinMasterTransaction from "../pages/LoseWinMasterTransaction"
+import LoseWinMasterTransaction from "../pages/LoseWinMasterTransaction";
+import ListNameAgent from "../pages/ListNameAgent";
 
 const UserName = "ผู้ใช้งาน";
 
@@ -65,20 +66,24 @@ function createData(
 }
 
 const rows = [
-  createData("1", "Master 1", 15, "200,000,000.00",),
-  createData("2", "Master 2", 3, "50,000,000.00", ),
-  createData("3", "Master 3", 10, "80,000,000.00",),
+  createData("1", "Master 1", 15, "200,000,000.00"),
+  createData("2", "Master 2", 3, "50,000,000.00"),
+  createData("3", "Master 3", 10, "80,000,000.00"),
 ];
 
-
 function Dashboard() {
-
   const [selectedRow, setSelectedRow] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
 
   const handleViewClick = (row) => {
-    setSelectedRow({ id: row.masterName}); 
+    setSelectedRow({ id: row.masterName });
   };
-  
+
+  const [selectedRowAgent, setSelectedRowAgent] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
+
+  const handleViewClickAgent = (row) => {
+    setSelectedRowAgent({ id: row.masterName, active: row.agentCount });
+  };
+
   return (
     <Box
       sx={{
@@ -94,26 +99,32 @@ function Dashboard() {
           id={selectedRow.id}
           onBack={() => setSelectedRow(null)}
         />
+      ) : selectedRowAgent ? (
+        <ListNameAgent
+          id={selectedRowAgent.id}
+          active={selectedRowAgent.active}
+          onBack={() => setSelectedRowAgent(null)}
+        />
       ) : (
-      <Box
-        sx={{
-          bgcolor: "white",
-          p: 2,
-          boxShadow: 1,
-          gap: 2,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <TextField
-            id="outlined-basic"
-            label="กรอกชื่อ Master"
-            variant="outlined"
-          />
-          <Button variant="contained">ค้นหา</Button>
-        </Box>
-        {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            bgcolor: "white",
+            p: 2,
+            boxShadow: 1,
+            gap: 2,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <TextField
+              id="outlined-basic"
+              label="กรอกชื่อ Master"
+              variant="outlined"
+            />
+            <Button variant="contained">ค้นหา</Button>
+          </Box>
+          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="subtitle1">
             <Box sx={{ bgcolor: '#eeeeee', display: 'inline-block', p: 1, borderRadius: '10px' }}>
               <b>ดาวไลน์ปัจจุบัน : </b> {UserName}
@@ -123,55 +134,63 @@ function Dashboard() {
             <b>รีเซ็ต</b>
           </Button>
         </Box> */}
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">ลำดับ</StyledTableCell>
-                <StyledTableCell align="center">ชื่อ Master</StyledTableCell>
-                <StyledTableCell align="center">จำนวน Agent</StyledTableCell>
-                <StyledTableCell align="center">
-                  ยอดเครดิตที่ใช้ไป
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  จัดการยอดถือสู้
-                </StyledTableCell>
-                <StyledTableCell align="center">การจัดการ</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.order}>
-                  <StyledTableCell component="th" scope="row" align="center">
-                    {row.order}
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">ลำดับ</StyledTableCell>
+                  <StyledTableCell align="center">ชื่อ Master</StyledTableCell>
+                  <StyledTableCell align="center">จำนวน Agent</StyledTableCell>
+                  <StyledTableCell align="center">
+                    ยอดเครดิตที่ใช้ไป
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.masterName}
+                    จัดการยอดถือสู้
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Button variant="contained">{row.agentCount}</Button>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.creditUsed}
-                  </StyledTableCell>
-                  <TableCell align="center">
-                        <Button
+                  <StyledTableCell align="center">การจัดการ</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <StyledTableRow key={row.order}>
+                    <StyledTableCell component="th" scope="row" align="center">
+                      {row.order}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.masterName}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
                         variant="contained"
-                          // startIcon={<VisibilityIcon />}
-                          onClick={() => handleViewClick(row)}
-                        >
-                          จัดการ
-                        </Button>
-                      </TableCell>
-                  <StyledTableCell align="center">
-                    <Button variant="contained" color="success">จัดการ</Button>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+                        // startIcon={<VisibilityIcon />}
+                        onClick={() => handleViewClickAgent(row)}
+                      >
+                        {row.agentCount}
+                      </Button>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.creditUsed}
+                    </StyledTableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        // startIcon={<VisibilityIcon />}
+                        onClick={() => handleViewClick(row)}
+                      >
+                        จัดการ
+                      </Button>
+                    </TableCell>
+                    <StyledTableCell align="center">
+                      <Button variant="contained" color="success">
+                        จัดการ
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       )}
     </Box>
   );
