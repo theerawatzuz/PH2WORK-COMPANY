@@ -34,6 +34,7 @@ import LoseWinMembers from '../pages/LoseWinMembers'
 import LoseWinProvider from '../pages/LoseWinProvider'
 import Managemember from '../pages/Managemember'
 import ReportCreditUsed from '../pages/ReportCreditUsed'
+import ListNameMaster from '../pages/ListNameMaster'
 
 
 const drawerWidth = 240;
@@ -137,7 +138,7 @@ export default function LeftNav() {
                   </ListItemButton>
                 </ListItem> */}
                 <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('ListNameAgent')}>
+                  <ListItemButton onClick={() => handleMenuClick('ListNameMaster')}>
                     <ListItemText primary="รายชื่อ Master" />
                   </ListItemButton>
                 </ListItem>
@@ -205,6 +206,7 @@ export default function LeftNav() {
         {selectedContent === 'LoseWinProvider' && <LoseWinProvider />}
         {selectedContent === 'Managemember' && <Managemember />}
         {selectedContent === 'ReportCreditUsed' && <ReportCreditUsed />}
+        {selectedContent === 'ListNameMaster' && <ListNameMaster />}
       </Box>
     </Box>
   );
