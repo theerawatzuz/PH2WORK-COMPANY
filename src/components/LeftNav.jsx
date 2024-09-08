@@ -128,11 +128,11 @@ export default function LeftNav() {
             </ListItem>
             {manageMemberOpen && (
               <List component="div" disablePadding>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
+                <ListItem sx={{ pl: 4 }} disablePadding>
                  <ListItemButton onClick={() => handleMenuClick('CreateAgent')}>
                     <ListItemText primary="สร้าง" />
                   </ListItemButton>
-                </ListItem> */}
+                </ListItem>
                 {/* <ListItem sx={{ pl: 4 }} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick('CreateMembers')}>
                     <ListItemText primary="สร้างสมาชิก" />
