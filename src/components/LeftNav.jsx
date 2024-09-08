@@ -33,6 +33,7 @@ import CopyMember from '../pages/CopyMember'
 import LoseWinMembers from '../pages/LoseWinMembers'
 import LoseWinProvider from '../pages/LoseWinProvider'
 import Managemember from '../pages/Managemember'
+import ReportCreditUsed from '../pages/ReportCreditUsed'
 
 
 const drawerWidth = 240;
@@ -163,15 +164,15 @@ export default function LeftNav() {
                 <ListItemIcon>
                   <AssessmentIcon />
                 </ListItemIcon>
-                <ListItemText primary="รายงานการใช้เครดิต" />
+                <ListItemText primary="รายงาน" />
                 {reportOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </ListItemButton>
             </ListItem>
             {reportOpen && (
               <List component="div" disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('LoseWinMembers')}>
-                    <ListItemText primary="แพ้ชนะ ผู้เล่น" />
+                  <ListItemButton onClick={() => handleMenuClick('ReportCreditUsed')}>
+                    <ListItemText primary="ยอดใช้เครดิต" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem sx={{ pl: 4 }} disablePadding>
@@ -203,6 +204,7 @@ export default function LeftNav() {
         {selectedContent === 'LoseWinMembers' && <LoseWinMembers />}
         {selectedContent === 'LoseWinProvider' && <LoseWinProvider />}
         {selectedContent === 'Managemember' && <Managemember />}
+        {selectedContent === 'ReportCreditUsed' && <ReportCreditUsed />}
       </Box>
     </Box>
   );
