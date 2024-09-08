@@ -88,7 +88,7 @@ function Dashboard() {
         bgcolor: "background.paper",
       }}
     >
-      <Typography variant="h4">รายชื่อ Master</Typography>
+      <Typography variant="h4">ภาพรวม</Typography>
       {selectedRow ? (
         <LoseWinMasterTransaction
           id={selectedRow.id}
