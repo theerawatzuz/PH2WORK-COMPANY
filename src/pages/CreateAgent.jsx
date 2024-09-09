@@ -48,7 +48,7 @@ function CreateAgent() {
   return (
     <Box sx={{ gap: 3}}>
     <Typography variant="h4">
-      CREATE AGENT
+      สร้าง Master
     </Typography>
     <Box sx={{}}>
       <Box sx={{boxShadow: 1 , mt: 2, p: 2, display: 'flex', width: 2/4, bgcolor:'white'}}>
