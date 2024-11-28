@@ -1,15 +1,15 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRoutes = () => {
-    const isAuthenticated = checkAuthStatus();
+const ProtectedRoute = ({ children }) => {
+  const location = useLocation();
+  const authToken = localStorage.getItem("authToken");
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  if (!authToken) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 };
 
-export default ProtectedRoutes;
-
-function checkAuthStatus () {
-    const token = localStorage.getItem('authToken'); 
-    return !!token;
-}
+export default ProtectedRoute;

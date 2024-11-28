@@ -1,28 +1,31 @@
-import React from 'react'
-import { Box } from '@mui/material'
-import Typography from '@mui/material/Typography';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Button from '@mui/material/Button';
-import { Divider } from '@mui/material';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import { styled } from '@mui/material/styles';
+import React, { useState, useEffect, useCallback } from "react";
+import { Box, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Button from "@mui/material/Button";
+import { Divider } from "@mui/material";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import { styled } from "@mui/material/styles";
+import dayjs from "dayjs";
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableFooter from '@mui/material/TableFooter';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableFooter from "@mui/material/TableFooter";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 //icon
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import HelpIcon from '@mui/icons-material/Help';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
+import axiosInstance from "../utils/axiosInstance";
+
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -36,7 +39,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
     borderRight: `1px solid ${theme.palette.divider}`,
     borderLeft: `1px solid ${theme.palette.divider}`,
-    borderButtom: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     borderTop: `1px solid ${theme.palette.divider}`,
   },
   [`&.${tableCellClasses.footer}`]: {
@@ -44,160 +47,418 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.black,
     borderRight: `1px solid ${theme.palette.divider}`,
     borderLeft: `1px solid ${theme.palette.divider}`,
-    borderButtom: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     borderTop: `1px solid ${theme.palette.divider}`,
     fontWeight: `bold`,
   },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
+  "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
-  // '&:last-child td, &:last-child th': {
-  //   border: 0,
-  // },
 }));
 
-function createData(num, provider, amount, realAmount, winloseRate, houseEdge, memberWinlose, memberCom, memberSum, providerWinlose, providerCom, providerSum, ambaapiWinlose, ambapiCom, ambapiSum) {
-  return { num, provider, amount, realAmount, winloseRate, houseEdge, memberWinlose, memberCom, memberSum, providerWinlose, providerCom, providerSum, ambaapiWinlose, ambapiCom, ambapiSum };
-}
-
-const rows = [
-  createData('1', "PG Soft", 1, 2, 3,4 ,5 ,6 ,7 ,8 ,9, 10,11,12,13),
-  createData('2', "PG Soft", 1, 2, 3,4 ,5 ,6 ,7 ,8 ,9, 10,11,12,13),
-  createData('3', "PG Soft", 1, 2, 3,4 ,5 ,6 ,7 ,8 ,9, 10,11,12,13),
-  createData('4', "PG Soft", 1, 2, 3,4 ,5 ,6 ,7 ,8 ,9, 10,11,12,13),
-];
-
-function LoseWinProvider() {
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
+function ProviderSelection({
+  providers,
+  onSelectChange,
+  providerStatusData,
+  selectedMaster,
+}) {
+  const onlineAgents = providerStatusData.filter(
+    (agent) => agent.status === "ONLINE"
+  );
 
   return (
-    <Box sx={{ gap: 2, display :'flex', flexDirection: 'column'}}>
-    <Typography variant="h4">
-      แพ้/ชนะ
-    </Typography>
-  {/* SearchHeader */}
-    <Box sx={{bgcolor: 'white', p: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', gap: 2}}>
-      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', gap : 2, alignItems: 'center'}}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker']}>
-              <DatePicker label="จากวันที่" />
-            </DemoContainer>
-          </LocalizationProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker']}>
-              <DatePicker label="ถึงวันที่" />
-            </DemoContainer>
-          </LocalizationProvider>
-          <Button variant="contained">ค้นหา</Button>
-          <Button variant="contained" color="success">ทั้งหมด</Button>
-          <Divider orientation="vertical" flexItem sx={{ height: 28, width: 2,  alignSelf: 'center', mx: 1, mr:2, bgcolor: 'grey' }} />
-          <ButtonGroup variant="contained" aria-label="GroupSelect">
-            <Button>วันนี้</Button>
-            <Button>อาทิตย์นี้</Button>
-            <Button>เดือนนี้</Button>
-        </ButtonGroup>
-        </Box>
-        <Typography variant="subtitle1" sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-          <HelpOutlineIcon fontSize="small" />นโยบายข้อมูล
-        </Typography>
-      </Box>
-      <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-        <TableRow>
-            <StyledTableCell align="center" rowSpan={2}>ลำดับ</StyledTableCell>
-            <StyledTableCell align="center" rowSpan={2}>ผูัให้บริการ</StyledTableCell>
-            <StyledTableCell align="center" rowSpan={2}>จำนวนเดิมพัน</StyledTableCell>
-            <StyledTableCell align="center" rowSpan={2}>ยอดเงินเดิมพันจริง</StyledTableCell>
-            <StyledTableCell align="center" rowSpan={2}>ชนะ/แพ้ 100%</StyledTableCell>
-            <StyledTableCell align="center" rowSpan={2}>House edge</StyledTableCell>
-            <StyledTableCell align="center" colSpan={3}>สมาชิก</StyledTableCell>
-            <StyledTableCell align="center" colSpan={3}>บริษัท</StyledTableCell>
-            <StyledTableCell align="center" colSpan={3}>Amb Api</StyledTableCell>
-          </TableRow>
-          <TableRow>
-            <StyledTableCell align="center">ชนะ/แพ้</StyledTableCell>
-            <StyledTableCell align="center">คอม</StyledTableCell>
-            <StyledTableCell align="center">ยอดรวม</StyledTableCell>
-            <StyledTableCell align="center">ชนะ/แพ้</StyledTableCell>
-            <StyledTableCell align="center">คอม</StyledTableCell>
-            <StyledTableCell align="center">ยอดรวม</StyledTableCell>
-            <StyledTableCell align="center">ชนะ/แพ้</StyledTableCell>
-            <StyledTableCell align="center">คอม</StyledTableCell>
-            <StyledTableCell align="center">ยอดรวม</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.num}>
-              <StyledTableCell component="th" scope="row" align='center'>
-                {row.num}
-              </StyledTableCell>
-              <StyledTableCell align="left">{row.provider}</StyledTableCell>
-              <StyledTableCell align="right">{row.amount}</StyledTableCell>
-              <StyledTableCell align="right">{row.realAmount}</StyledTableCell>
-              <StyledTableCell align="right">{row.winloseRate}</StyledTableCell>
-              <StyledTableCell align="right">{row.houseEdge}</StyledTableCell>
-              <StyledTableCell align="right">{row.memberWinlose}</StyledTableCell>
-              <StyledTableCell align="right">{row.memberCom}</StyledTableCell>
-              <StyledTableCell align="right">{row.memberSum}</StyledTableCell>
-              <StyledTableCell align="right">{row.providerWinlose}</StyledTableCell>
-              <StyledTableCell align="right">{row.providerCom}</StyledTableCell>
-              <StyledTableCell align="right">{row.providerSum}</StyledTableCell>
-              <StyledTableCell align="right">{row.ambaapiWinlose}</StyledTableCell>
-              <StyledTableCell align="right">{row.ambapiCom}</StyledTableCell>
-              <StyledTableCell align="right">{row.ambapiSum}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow sx={{bgcolor: 'grey.400'}}>
-            <StyledTableCell align="center" colSpan={6}>รวม (บาท)</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก รวม</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก ยอดรวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท ชนะ/แพ้ รวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท ยอดรวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api ชนะ/แพ้ รวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api ยอดรวม</StyledTableCell>
-          </TableRow>
-          <TableRow sx={{bgcolor: 'grey.500'}}>
-            <StyledTableCell align="center" colSpan={6}>รวม (ดอลล่าห์)</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก รวม</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">สมาชิก ยอดรวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท ชนะ/แพ้ รวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">บริษัท ยอดรวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api ชนะ/แพ้ รวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api คอม รวม</StyledTableCell>
-            <StyledTableCell align="right">Amb Api ยอดรวม</StyledTableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-    </Box>
-  
-    
-  </Box>
-  )
+    <ButtonGroup variant="outlined" size="small">
+      {onlineAgents.map((agent) => (
+        <Button
+          key={agent.id}
+          onClick={() => onSelectChange(agent.id)}
+          variant={selectedMaster === agent.id ? "contained" : "outlined"}
+        >
+          {agent.username} {agent.website ? `(${agent.website})` : ""}
+        </Button>
+      ))}
+    </ButtonGroup>
+  );
 }
 
-export default LoseWinProvider
+function LoseWinProvider() {
+  const [providers, setProviders] = useState({ ALL: true });
+  const [showTable, setShowTable] = useState(false);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [showUserReport, setShowUserReport] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [providerStatusData, setProviderStatusData] = useState([]);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [selectedMaster, setSelectedMaster] = useState(null);
+
+  const updateFilteredRows = useCallback(() => {
+    const fetchData = async () => {
+      if (!selectedMaster) return;
+
+      setIsLoading(true);
+      try {
+        const token = localStorage.getItem("authToken");
+        const body = {
+          master_id: selectedMaster,
+          start: startDate ? startDate.format("YYYY-MM-DDTHH:mm:ssZ") : null,
+          end: endDate ? endDate.format("YYYY-MM-DDTHH:mm:ssZ") : null,
+        };
+
+        const response = await axiosInstance.post("/report/masters", body, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const formattedData = Array.isArray(response.data.data)
+          ? response.data.data
+          : [response.data.data];
+        setFilteredRows(formattedData);
+      } catch (error) {
+        console.error("Error in fetchData:", error);
+        setFilteredRows([]);
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [selectedMaster, startDate, endDate]);
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axiosInstance.get("/master?page=0&size=100", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const agentsData = response.data.data;
+        setProviderStatusData(agentsData);
+
+        const firstOnlineMaster = agentsData.find(
+          (agent) => agent.status === "ONLINE"
+        );
+        if (firstOnlineMaster) {
+          setSelectedMaster(firstOnlineMaster.id);
+        }
+
+        const todayStart = dayjs().startOf("day").add(1, "minute");
+        const todayEnd = dayjs();
+
+        setStartDate(todayStart);
+        setEndDate(todayEnd);
+        setShowTable(true);
+      } catch (error) {
+        console.error("Error fetching providers:", error);
+      }
+    };
+
+    fetchProviders();
+  }, []);
+
+  useEffect(() => {
+    if (
+      isInitialLoad &&
+      startDate &&
+      endDate &&
+      providerStatusData.length > 0
+    ) {
+      updateFilteredRows();
+      setIsInitialLoad(false);
+    }
+  }, [
+    isInitialLoad,
+    startDate,
+    endDate,
+    providerStatusData,
+    updateFilteredRows,
+  ]);
+
+  useEffect(() => {
+    if (startDate && endDate && selectedMaster) {
+      updateFilteredRows();
+    }
+  }, [startDate, endDate, selectedMaster]);
+
+  const handleSearch = () => {
+    setShowTable(true);
+    updateFilteredRows();
+  };
+
+  const handleAllDates = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setShowTable(true);
+    updateFilteredRows();
+  };
+
+  const handleQuickSelect = async (period) => {
+    const now = dayjs();
+    let newStartDate, newEndDate;
+
+    switch (period) {
+      case "today":
+        newStartDate = now.startOf("day").add(1, "minute");
+        newEndDate = now;
+        break;
+      case "week":
+        newStartDate = now.startOf("week");
+        newEndDate = now;
+        break;
+      case "month":
+        newStartDate = now.startOf("month");
+        newEndDate = now;
+        break;
+    }
+
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+    setShowTable(true);
+  };
+
+  const totalSum = filteredRows.reduce((acc, row) => acc + row.total, 0);
+  const receivedSum = filteredRows.reduce((acc, row) => acc + row.received, 0);
+  const companyReceivedSum = filteredRows.reduce(
+    (acc, row) => acc + row.companyReceived,
+    0
+  );
+
+  const handleShowFindUserReport = () => {
+    setShowUserReport(true);
+  };
+
+  const handleBack = () => {
+    setShowUserReport(false);
+  };
+
+  const handleProviderSelect = useCallback((masterId) => {
+    setSelectedMaster(masterId);
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        gap: 2,
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "background.paper",
+      }}
+    >
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Typography variant="h4">รายงาน Master</Typography>
+      </Box>
+
+      <Box sx={{ gap: 2, display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            bgcolor: "white",
+            p: 2,
+            boxShadow: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    label="จากวันที่"
+                    value={startDate}
+                    onChange={(newValue) => setStartDate(newValue)}
+                    format="DD MMM YYYY"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker
+                    label="ถึงวันที่"
+                    value={endDate}
+                    onChange={(newValue) => setEndDate(newValue)}
+                    format="DD MMM YYYY"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              <Button variant="contained" onClick={handleSearch}>
+                ค้นหา
+              </Button>
+
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  height: 28,
+                  width: 2,
+                  alignSelf: "center",
+                  mx: 1,
+                  mr: 2,
+                  bgcolor: "grey",
+                }}
+              />
+              <ButtonGroup variant="contained" aria-label="GroupSelect">
+                <Button onClick={() => handleQuickSelect("today")}>
+                  วันนี้
+                </Button>
+                <Button onClick={() => handleQuickSelect("week")}>
+                  อาทิตย์นี้
+                </Button>
+                <Button onClick={() => handleQuickSelect("month")}>
+                  เดือนนี้
+                </Button>
+              </ButtonGroup>
+            </Box>
+            <Typography
+              variant="subtitle1"
+              sx={{ display: "flex", alignItems: "center", gap: 1 }}
+            >
+              <HelpOutlineIcon fontSize="small" />
+              นโยบายข้อมูล
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="subtitle1"
+            sx={{ display: "flex", alignItems: "center", gap: 2 }}
+          >
+            <b>Masters</b>
+            <ProviderSelection
+              providers={providers}
+              onSelectChange={handleProviderSelect}
+              providerStatusData={providerStatusData}
+              selectedMaster={selectedMaster}
+            />
+          </Typography>
+          {showTable && (
+            <>
+              <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>
+                {startDate && endDate
+                  ? `วันที่ ${startDate.format(
+                      "DD MMM YYYY"
+                    )} - ${endDate.format("DD MMM YYYY")}`
+                  : "ทั้งหมด"}
+              </Typography>
+              {isLoading ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell align="center">
+                          ค่ายเกมส์
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          เปอร์เซ็นต์ Master
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          เปอร์เซ็นต์ Company
+                        </StyledTableCell>
+                        <StyledTableCell align="right">เดิมพัน</StyledTableCell>
+                        <StyledTableCell align="right">
+                          ยอดได้เสีย
+                        </StyledTableCell>
+                        <StyledTableCell align="right">ยอดรวม</StyledTableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredRows.map((row, index) => (
+                        <StyledTableRow key={index}>
+                          <StyledTableCell align="center">
+                            <b>{row?.game?.name || "N/A"}</b>
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            {(row?.percentage?.master * 100 || 0).toFixed(2)}%
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            {(row?.percentage?.company * 100 || 0).toFixed(2)}%
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            {Number(row?.credit?.bet || 0).toLocaleString()}
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            {Number(row?.credit?.settle || 0).toLocaleString()}
+                          </StyledTableCell>
+                          <StyledTableCell align="right">
+                            {Number(row?.credit?.total || 0).toLocaleString()}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <StyledTableCell align="right" colSpan={3}>
+                          รวม
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <b>
+                            {filteredRows
+                              .reduce(
+                                (sum, row) => sum + (row?.credit?.bet || 0),
+                                0
+                              )
+                              .toLocaleString()}
+                          </b>
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <b>
+                            {filteredRows
+                              .reduce(
+                                (sum, row) => sum + (row?.credit?.settle || 0),
+                                0
+                              )
+                              .toLocaleString()}
+                          </b>
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <b>
+                            {filteredRows
+                              .reduce(
+                                (sum, row) => sum + (row?.credit?.total || 0),
+                                0
+                              )
+                              .toLocaleString()}
+                          </b>
+                        </StyledTableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </TableContainer>
+              )}
+            </>
+          )}
+        </Box>
+      </Box>
+
+      {/* <TablePagination
+            rowsPerPageOptions={[1, 5, 10, 25, 50]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          /> */}
+    </Box>
+  );
+}
+
+export default LoseWinProvider;

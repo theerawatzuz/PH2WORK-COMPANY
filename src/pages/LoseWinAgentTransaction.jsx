@@ -54,7 +54,7 @@ const rows = [
   { agent: "Joker", netAmount: "89%" },
 ];
 
-function LoseWinMasterTransaction({ id, onBack }) {
+function LoseWinAgentTransaction({ id, onBack }) {
   const [playerData, setPlayerData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -79,12 +79,14 @@ function LoseWinMasterTransaction({ id, onBack }) {
   };
 
   const updateAllDropdowns = (value) => {
-    setDropdownValues(rows.map((row) => {
-      if (row.agent === "SBO" && parseInt(value) > 87) {
-        return "87%";
-      }
-      return value;
-    }));
+    setDropdownValues(
+      rows.map((row) => {
+        if (row.agent === "SBO" && parseInt(value) > 86) {
+          return "86%";
+        }
+        return value;
+      })
+    );
   };
 
   const handleQuickSettingChange = (event) => {
@@ -129,16 +131,15 @@ function LoseWinMasterTransaction({ id, onBack }) {
       >
         <Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Button variant="contained" onClick={onBack}>
-            กลับ
-          </Button>
-          <Button variant="contained" color="success" onClick={onBack}>
-            บันทึก
-          </Button>
-
+            <Button variant="contained" onClick={onBack}>
+              กลับ
+            </Button>
+            <Button variant="contained" color="success" onClick={onBack}>
+              บันทึก
+            </Button>
           </Box>
           <Typography variant="h4" sx={{ mt: 2 }}>
-            จัดการยอดถือสู้ของ Agent
+            จัดการยอดถือสู้ของ Master
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 2 }}>
             <AccountCircle />
@@ -150,7 +151,13 @@ function LoseWinMasterTransaction({ id, onBack }) {
             />
           </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Button startIcon={<CachedIcon />} onClick={handleReset}>
             <b>รีเซ็ต</b>
           </Button>
@@ -198,10 +205,10 @@ function LoseWinMasterTransaction({ id, onBack }) {
                       >
                         {[...Array(row.agent === "SBO" ? 38 : 40).keys()].map(
                           (i) => (
-                            <MenuItem 
-                              key={i} 
+                            <MenuItem
+                              key={i}
                               value={`${50 + i}%`}
-                              disabled={row.agent === "SBO" && (50 + i) > 87}
+                              disabled={row.agent === "SBO" && 50 + i > 86}
                             >
                               {50 + i}%
                             </MenuItem>
@@ -223,10 +230,9 @@ function LoseWinMasterTransaction({ id, onBack }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      
       </Box>
     </Box>
   );
 }
 
-export default LoseWinMasterTransaction;
+export default LoseWinAgentTransaction;

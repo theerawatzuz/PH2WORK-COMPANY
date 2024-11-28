@@ -22,9 +22,9 @@ import CachedIcon from "@mui/icons-material/Cached";
 
 // import LoseWinMasterTransaction from "../pages/LoseWinMasterTransaction";
 // import ListNameAgent from "../pages/ListNameAgent";
-import ManageOneAgent from "./ManageOneAgent";
-import LoseWinOneAgentTransaction from "./LoseWinOneAgentTransaction";
-import ManageOneAgentCredit from "./ManageOneAgentCredit";
+import ManageOneAgent from "../pages/ManageOneAgent";
+import LoseWinOneAgentTransaction from "../pages/LoseWinOneAgentTransaction";
+import ManageOneAgentCredit from "../pages/ManageOneAgentCredit";
 
 const UserName = "ผู้ใช้งาน";
 
@@ -80,7 +80,7 @@ function createData(
   };
 }
 
-function ListNameMaster() {
+function DashboardReport() {
   const [selectedRow, setSelectedRow] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
 
   const handleViewClick = (row) => {
@@ -103,7 +103,7 @@ function ListNameMaster() {
 
   // เพิ่ม state สำหรับ pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [agents, setAgents] = useState([]);
   const [pagination, setPagination] = useState(null);
 
@@ -116,7 +116,7 @@ function ListNameMaster() {
   const loadAgents = () => {
     const authToken = localStorage.getItem("authToken");
     axiosInstance
-      .get(`/master?page=${page}&size=${rowsPerPage}`, {
+      .get(`/agents?page=${page}&size=${rowsPerPage}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -173,7 +173,7 @@ function ListNameMaster() {
         bgcolor: "background.paper",
       }}
     >
-      <Typography variant="h4">รายชื่อ Master</Typography>
+      <Typography variant="h4">ภาพรวม Agent</Typography>
       {selectedRow ? (
         <Box>
           <LoseWinOneAgentTransaction
@@ -227,14 +227,16 @@ function ListNameMaster() {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">ID</StyledTableCell>
-                  <StyledTableCell align="center">ชื่อ Master</StyledTableCell>
-                  <StyledTableCell align="center">Prefix</StyledTableCell>
+                  <StyledTableCell align="center">ชื่อ Agent</StyledTableCell>
+                  <StyledTableCell align="center">Website</StyledTableCell>
                   {/* <StyledTableCell align="center">ประเภท</StyledTableCell> */}
                   <StyledTableCell align="center">สถานะ</StyledTableCell>
-                  {/* <StyledTableCell align="center">
+                  <StyledTableCell align="center">
                     ยอดเครดิตที่ใช้ไป
-                  </StyledTableCell> */}
-                  <StyledTableCell align="center">เครดิต</StyledTableCell>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    เครดิตคงเหลือ
+                  </StyledTableCell>
                   <StyledTableCell align="center">ยอดถือสู้</StyledTableCell>
                   <StyledTableCell align="center">
                     จัดการเครดิตและประวัติ
@@ -256,8 +258,8 @@ function ListNameMaster() {
                       <StyledTableCell align="center">
                         {row.username || "-"}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <b>{row.prefix || "-"}</b>
+                      <StyledTableCell align="right">
+                        <b>{row.website || "-"}</b>
                       </StyledTableCell>
                       {/* <StyledTableCell align="left">
                         <b>-</b>
@@ -279,6 +281,9 @@ function ListNameMaster() {
                         >
                           {row.status}
                         </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <b>{row.creditUsed?.toLocaleString() || "-"}</b>
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         <b>{row.credit.toLocaleString()}</b>
@@ -311,17 +316,17 @@ function ListNameMaster() {
               </TableBody>
             </Table>
             <TablePagination
-              rowsPerPageOptions={[25, 50, 100]}
+              rowsPerPageOptions={[10, 25, 50, 100]}
               component="div"
-              count={-1} // ใส่ -1 เพื่อให้ไม่มีการคำนวณจำนวนหน้าทั้งหมด
+              count={filteredAgents.length} // แก้ไขให้ใช้ความยาวของข้อมูลที่กรองแล้ว
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               labelRowsPerPage="แถวต่อหน้า"
-              labelDisplayedRows={({ from, to }) => `${from}-${to}`} // ลบ count ออกเพื่อไม่แสดงจำนวนทั้งหมด
-              showFirstButton={false} // ซ่อนปุ่มไปหน้าแรก
-              showLastButton={false} // ซ่อนปุ่มไปหน้าสุดท้าย
+              labelDisplayedRows={({ from, to, count }) =>
+                `${from}-${to} จาก ${count}`
+              }
             />
           </TableContainer>
         </Box>
@@ -330,4 +335,4 @@ function ListNameMaster() {
   );
 }
 
-export default ListNameMaster;
+export default DashboardReport;

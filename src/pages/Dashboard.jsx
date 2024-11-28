@@ -1,199 +1,285 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import { Divider } from "@mui/material";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import axiosInstance from "../utils/axiosInstance";
 
-// Icons
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import CachedIcon from "@mui/icons-material/Cached";
+import DashboardReport from "../pages/DashboardReport";
 
-import LoseWinMasterTransaction from "../pages/LoseWinMasterTransaction";
-import ListNameAgent from "../pages/ListNameAgent";
+//Tab
+import TabSlot from "./DashboardTabPages/TabSlot";
 
-const UserName = "ผู้ใช้งาน";
+//icon
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import PasswordIcon from "@mui/icons-material/Password";
+import KeyIcon from "@mui/icons-material/Key";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[400],
-    color: theme.palette.common.black,
-    borderRight: `1px solid ${theme.palette.divider}`,
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    fontWeight: `bold`,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    borderRight: `1px solid ${theme.palette.divider}`,
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  [`&.${tableCellClasses.footer}`]: {
-    fontSize: 14,
-    color: theme.palette.common.black,
-    borderRight: `1px solid ${theme.palette.divider}`,
-    borderLeft: `1px solid ${theme.palette.divider}`,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    borderTop: `1px solid ${theme.palette.divider}`,
-    fontWeight: `bold`,
-  },
-}));
+//State
+const user = "ผู้ใช้งาน";
+const userStatus = "Enabled";
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-}));
+//amount
+const currentAmount = "0.00";
 
-function createData(
-  order,
-  masterName,
-  agentCount,
-  creditUsed,
-  manageCredit,
-  manage
-) {
-  return { order, masterName, agentCount, creditUsed, manageCredit, manage };
-}
+const Dashboard = () => {
+  const [value, setValue] = React.useState("1");
+  const [nestedValue, setNestedValue] = React.useState("1.1");
+  const [username, setUsername] = useState("");
+  const [status, setStatus] = useState("");
 
-const rows = [
-  createData("1", "Master 1", 15, "200,000,000.00"),
-  createData("2", "Master 2", 3, "50,000,000.00"),
-  createData("3", "Master 3", 10, "80,000,000.00"),
-];
+  const [totalDeposit, setTotalDeposit] = useState(0);
+  const [totalWithdraw, setTotalWithdraw] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
 
-function Dashboard() {
-  const [selectedRow, setSelectedRow] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
+  const [monthDeposit, setMonthDeposit] = useState(0);
+  const [monthWithdraw, setMonthWithdraw] = useState(0);
+  const [monthProfit, setMonthProfit] = useState(0);
 
-  const handleViewClick = (row) => {
-    setSelectedRow({ id: row.masterName });
+  const [todayDeposit, setTodayDeposit] = useState(0);
+  const [todayWithdraw, setTodayWithdraw] = useState(0);
+  const [todayProfit, setTodayProfit] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-  const [selectedRowAgent, setSelectedRowAgent] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
-
-  const handleViewClickAgent = (row) => {
-    setSelectedRowAgent({ id: row.masterName, active: row.agentCount });
+  const handleNestedChange = (event, newValue) => {
+    setNestedValue(newValue);
   };
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    axiosInstance
+      .get("/user/@me", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setUsername(response.data.username);
+        setStatus(response.data.status);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    axiosInstance
+      .get("/dashboard/getDWTotal", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setTotalDeposit(response.data.deposit);
+        setTotalWithdraw(response.data.profit);
+        setTotalProfit(response.data.withdraw);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    axiosInstance
+      .get("/dashboard/getDWMonth", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setMonthDeposit(response.data.deposit);
+        setMonthWithdraw(response.data.profit);
+        setMonthProfit(response.data.withdraw);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    axiosInstance
+      .get("/dashboard/getDWToday", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        setTodayDeposit(response.data.deposit);
+        setTodayWithdraw(response.data.profit);
+        setTodayProfit(response.data.withdraw);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   return (
-    <Box
-      sx={{
-        gap: 2,
-        display: "flex",
-        flexDirection: "column",
-        bgcolor: "background.paper",
-      }}
-    >
+    <Box sx={{ gap: 3, bgcolor: "background.paper" }}>
       <Typography variant="h4">ภาพรวม</Typography>
-      {selectedRow ? (
-        <LoseWinMasterTransaction
-          id={selectedRow.id}
-          onBack={() => setSelectedRow(null)}
-        />
-      ) : selectedRowAgent ? (
-        <ListNameAgent
-          id={selectedRowAgent.id}
-          active={selectedRowAgent.active}
-          onBack={() => setSelectedRowAgent(null)}
-        />
-      ) : (
-        <Box
-          sx={{
-            bgcolor: "white",
-            p: 2,
-            boxShadow: 1,
-            gap: 2,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <TextField
-              id="outlined-basic"
-              label="กรอกชื่อ Master"
-              variant="outlined"
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        {/* HEAD */}
+        <Box sx={{ boxShadow: 1, mt: 2, p: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <AccountCircle />
+            {username}
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: 28, alignSelf: "center", mx: 1, bgcolor: "white" }}
             />
-            <Button variant="contained">ค้นหา</Button>
+
+            {/* <Button
+              size="small"
+              variant="contained"
+              startIcon={<PasswordIcon />}
+              sx={{ mx: 1 }}
+            >
+              เปลี่ยนรหัส
+            </Button> */}
+            {/* <Button size="small" variant="contained" color="success" startIcon={<KeyIcon />} sx={{mx:1}}>เปลี่ยนพาสโค้ด</Button> */}
+            {/* <Typography variant="body1">สถานะ :</Typography>
+            <Typography variant="body1" color="green">
+              <b>{status}</b>
+            </Typography> */}
+            {/* <Typography variant="body1" color="red">
+                <b>{userStatus}</b>
+              </Typography> */}
           </Box>
-          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="subtitle1">
-            <Box sx={{ bgcolor: '#eeeeee', display: 'inline-block', p: 1, borderRadius: '10px' }}>
-              <b>ดาวไลน์ปัจจุบัน : </b> {UserName}
+
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              bgcolor: "#bbdefb",
+              borderRadius: "12px",
+              display: "flex",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", width: 6 / 12 }}>
+              <Typography variant="body1">
+                <b>THB</b>
+              </Typography>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  height: 3 / 4,
+                  width: 2,
+                  alignSelf: "center",
+                  mx: 1,
+                  mr: 2,
+                  bgcolor: "black",
+                }}
+              />
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>ยอดเงิน</b>
+                </Typography>
+                <Typography variant="body1">
+                  <b>{currentAmount}</b>
+                </Typography>
+              </Box>
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>ยอดเงินของคนข้างล่าง</b>
+                </Typography>
+                <Typography variant="body1">
+                  <b>{currentAmount}</b>
+                </Typography>
+              </Box>
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>แทง</b>
+                </Typography>
+                <Typography variant="body1">
+                  <b>{currentAmount}</b>
+                </Typography>
+              </Box>
             </Box>
-          </Typography>
-          <Button startIcon={<CachedIcon />}>
-            <b>รีเซ็ต</b>
-          </Button>
-        </Box> */}
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">ลำดับ</StyledTableCell>
-                  <StyledTableCell align="center">ชื่อ Master</StyledTableCell>
-                  <StyledTableCell align="center">จำนวน Agent</StyledTableCell>
-                  <StyledTableCell align="center">
-                    ยอดเครดิตที่ใช้ไป
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    จัดการยอดถือสู้
-                  </StyledTableCell>
-                  <StyledTableCell align="center">การจัดการ</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow key={row.order}>
-                    <StyledTableCell component="th" scope="row" align="center">
-                      {row.order}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.masterName}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button
-                        variant="contained"
-                        // startIcon={<VisibilityIcon />}
-                        onClick={() => handleViewClickAgent(row)}
-                      >
-                        {row.agentCount}
-                      </Button>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.creditUsed}
-                    </StyledTableCell>
-                    <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        // startIcon={<VisibilityIcon />}
-                        onClick={() => handleViewClick(row)}
-                      >
-                        จัดการ
-                      </Button>
-                    </TableCell>
-                    <StyledTableCell align="center">
-                      <Button variant="contained" color="success">
-                        จัดการ
-                      </Button>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+
+            <Box sx={{ display: "flex", alignItems: "center", width: 6 / 12 }}>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  height: 3 / 4,
+                  width: 2,
+                  alignSelf: "center",
+                  mx: 1,
+                  mr: 2,
+                  bgcolor: "black",
+                }}
+              />
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>ยอดรวมทั้งหมด</b>
+                </Typography>
+                <Box>
+                  <Typography variant="body1">
+                    <b>ฝาก : {totalDeposit.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>ถอน : {totalWithdraw.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>กำไร : {totalProfit.toLocaleString()}</b>
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>ยอดรายเดือน</b>
+                </Typography>
+                <Box>
+                  <Typography variant="body1">
+                    <b>ฝาก : {monthDeposit.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>ถอน : {monthWithdraw.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>กำไร : {monthProfit.toLocaleString()}</b>
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ width: 1 / 3 }}>
+                <Typography variant="body1">
+                  <b>ยอดวันนี้</b>
+                </Typography>
+                <Box>
+                  <Typography variant="body1">
+                    <b>ฝาก : {todayDeposit.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>ถอน : {todayWithdraw.toLocaleString()}</b>
+                  </Typography>
+                  <Typography variant="body1">
+                    <b>กำไร : {todayProfit.toLocaleString()}</b>
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
-      )}
+        {/* BODY */}
+        {/* <Box sx={{ width: "100%", boxShadow: 1, mt: -1, p: 2 }}>
+          <DashboardReport />
+        </Box> */}
+      </Box>
     </Box>
   );
-}
+};
 
 export default Dashboard;

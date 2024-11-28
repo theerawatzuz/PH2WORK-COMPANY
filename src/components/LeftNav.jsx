@@ -1,215 +1,208 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuAppBar from './Nav'
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import styled from "@emotion/styled";
+import Box from "@mui/material/Box";
 
-//Icon
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-
-// import page
-import Dashboard from '../pages/Dashboard';
-import History from '../pages/History';
-import CreateAgent from '../pages/CreateAgent'
-import CreateMembers from '../pages/CreateMember'
-import ListNameAgent from '../pages/ListNameAgent'
-import CopyMember from '../pages/CopyMember'
-import LoseWinMembers from '../pages/LoseWinMembers'
-import LoseWinProvider from '../pages/LoseWinProvider'
-import Managemember from '../pages/Managemember'
-import ReportCreditUsed from '../pages/ReportCreditUsed'
-import ListNameMaster from '../pages/ListNameMaster'
-import GuardBalanceManage from '../pages/GuardBalanceManage'
-
+// Icons
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import HistoryIcon from "@mui/icons-material/History";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import GroupIcon from "@mui/icons-material/Group";
+import CasinoIcon from "@mui/icons-material/Casino";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 const drawerWidth = 240;
 
-export default function LeftNav() {
+const ToggleButton = styled("div")(({ theme, isExpanded }) => ({
+  position: "absolute",
+  left: isExpanded ? drawerWidth : 64,
+  top: "72px",
+  width: 32,
+  height: 32,
+  backgroundColor: theme.palette.primary.main,
+  borderRadius: "0 16px 16px 0",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  color: theme.palette.common.white,
+  boxShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+  transition: theme.transitions.create(["left"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  zIndex: 1300,
+  "&:hover": {
+    backgroundColor: theme.palette.primary.light,
+    width: 36,
+  },
+}));
 
-  //SetStateMenu
-  const [accountOpen, setAccountOpen] = React.useState(false);
-  const [manageMemberOpen, setManageMemberOpen] = React.useState(false);
-  const [reportOpen, setReportOpen] = React.useState(false);
+export default function LeftNav({ isExpanded, setIsExpanded }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [reportOpen, setReportOpen] = useState(false);
 
-  //SetDefaultPageDashboard
-  const [selectedContent, setSelectedContent] = React.useState('Dashboard');
+  const menuItems = [
+    { text: "แดชบอร์ด", icon: <DashboardIcon />, path: "/app/dashboard" },
+    {
+      text: "ประวัติ",
+      icon: <HistoryIcon />,
+      disabled: true,
+      path: "/app/history",
+    },
+    {
+      text: "รายชื่อ Master",
+      icon: <FormatListBulletedIcon />,
+      path: "/app/list-master",
+    },
+    {
+      text: "จัดการ Master",
+      icon: <ManageAccountsIcon />,
+      path: "/app/manage-master",
+    },
 
+    {
+      text: "สร้าง Master",
+      icon: <PersonAddIcon />,
+      path: "/app/create-master",
+    },
+  ];
 
-  //MenuDrawList
-  const handleaccountClick = () => {
-    setAccountOpen(!accountOpen);
-  };
-
-  const handleManageMemberOpen = () => {
-    setManageMemberOpen(!manageMemberOpen);
-  };
-
-  const handleReportOpen = () => {
-    setReportOpen(!reportOpen);
-  };
-
-  //Content Select
-  const handleMenuClick = (content) => {
-    setSelectedContent(content);
-  };
+  const reportItems = [
+    { text: "รายงาน Master", path: "/app/reports/lose-win-provider" },
+    { text: "รายงาน Billing", path: "/app/reports/billing" },
+  ];
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <MenuAppBar />
-        </Toolbar>
-      </AppBar>
+    <Box sx={{ position: "relative" }}>
       <Drawer
         variant="permanent"
         sx={{
-          width: drawerWidth,
+          width: isExpanded ? drawerWidth : 64,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          "& .MuiDrawer-paper": {
+            width: isExpanded ? drawerWidth : 64,
+            boxSizing: "border-box",
+            transition: "width 0.3s ease",
+            overflowX: "hidden",
+            border: "none",
+            zIndex: 1200,
+          },
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleaccountClick}>
-                <ListItemIcon>
-                  <AccountBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary="หน้าหลัก" />
-                {accountOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </ListItemButton>
-            </ListItem>
-            {accountOpen && (
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('Dashboard')}>
-                    <ListItemText primary="ภาพรวม" />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('History')}>
-                    <ListItemText primary="ประวัติ" />
-                  </ListItemButton>
-                </ListItem>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="{waiting}" />
-                  </ListItemButton>
-                </ListItem> */}
-              </List>
-            )}
 
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleManageMemberOpen}>
-                <ListItemIcon>
-                  <ManageAccountsIcon />
+        <List>
+          {menuItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton
+                onClick={() => navigate(item.path)}
+                selected={location.pathname === item.path}
+                sx={{
+                  "&.Mui-selected": {
+                    backgroundColor: (theme) =>
+                      `${theme.palette.primary.main}14`,
+                    "&:hover": {
+                      backgroundColor: (theme) =>
+                        `${theme.palette.primary.main}29`,
+                    },
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: (theme) =>
+                      location.pathname === item.path
+                        ? theme.palette.primary.main
+                        : "inherit",
+                  }}
+                >
+                  {item.icon}
                 </ListItemIcon>
-                <ListItemText primary="การจัดการ" />
-                {manageMemberOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {isExpanded && <ListItemText primary={item.text} />}
               </ListItemButton>
             </ListItem>
-            {manageMemberOpen && (
-              <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                 <ListItemButton onClick={() => handleMenuClick('CreateAgent')}>
-                    <ListItemText primary="สร้าง" />
-                  </ListItemButton>
-                </ListItem>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('CreateMembers')}>
-                    <ListItemText primary="สร้างสมาชิก" />
-                  </ListItemButton>
-                </ListItem> */}
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('ListNameMaster')}>
-                    <ListItemText primary="รายชื่อ Master" />
-                  </ListItemButton>
-                </ListItem>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('CopyMember')}>
-                    <ListItemText primary="CopyMember" />
-                  </ListItemButton>
-                </ListItem> */}
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('GuardBalanceManage')}>
-                    <ListItemText primary="จัดการ" />
-                  </ListItemButton>
-                </ListItem>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="{waiting}" />
-                  </ListItemButton>
-                </ListItem> */}
-              </List>
-            )}
+          ))}
 
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleReportOpen}>
-                <ListItemIcon>
-                  <AssessmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="รายงาน" />
-                {reportOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </ListItemButton>
-            </ListItem>
-            {reportOpen && (
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setReportOpen(!reportOpen)}
+              selected={location.pathname.includes("/app/reports")}
+              sx={{
+                "&.Mui-selected": {
+                  backgroundColor: (theme) => `${theme.palette.primary.main}14`,
+                  "&:hover": {
+                    backgroundColor: (theme) =>
+                      `${theme.palette.primary.main}29`,
+                  },
+                },
+              }}
+            >
+              <ListItemIcon>
+                <AssessmentIcon />
+              </ListItemIcon>
+              {isExpanded && (
+                <>
+                  <ListItemText primary="รายงาน" />
+                  {reportOpen ? <ExpandLess /> : <ExpandMore />}
+                </>
+              )}
+            </ListItemButton>
+          </ListItem>
+
+          {isExpanded && (
+            <Collapse in={reportOpen} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('ReportCreditUsed')}>
-                    <ListItemText primary="ยอดใช้เครดิต" />
+                {reportItems.map((item) => (
+                  <ListItemButton
+                    key={item.text}
+                    sx={{
+                      pl: 4,
+                      "&.Mui-selected": {
+                        backgroundColor: (theme) =>
+                          `${theme.palette.primary.main}14`,
+                        "&:hover": {
+                          backgroundColor: (theme) =>
+                            `${theme.palette.primary.main}29`,
+                        },
+                      },
+                    }}
+                    selected={location.pathname === item.path}
+                    onClick={() => navigate(item.path)}
+                  >
+                    <ListItemText primary={item.text} />
                   </ListItemButton>
-                </ListItem>
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton onClick={() => handleMenuClick('LoseWinProvider')}>
-                    <ListItemText primary="แพ้ชนะ ตามค่าย" />
-                  </ListItemButton>
-                </ListItem> */}
-                {/* <ListItem sx={{ pl: 4 }} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary="{waiting}" />
-                  </ListItemButton>
-                </ListItem> */}
+                ))}
               </List>
-            )}
-            
-          </List>
-        </Box>
+            </Collapse>
+          )}
+        </List>
       </Drawer>
 
-      {/* Page Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 , bgcolor: '#fafbfb', height: '100vh'}}>
-        <Toolbar />
-        {selectedContent === 'Dashboard' && <Dashboard />}
-        {selectedContent === 'History' && <History />}
-        {selectedContent === 'CreateAgent' && <CreateAgent />}
-        {selectedContent === 'CreateMembers' && <CreateMembers />}
-        {selectedContent === 'ListNameAgent' && <ListNameAgent />}
-        {selectedContent === 'CopyMember' && <CopyMember />}
-        {selectedContent === 'LoseWinMembers' && <LoseWinMembers />}
-        {selectedContent === 'LoseWinProvider' && <LoseWinProvider />}
-        {selectedContent === 'Managemember' && <Managemember />}
-        {selectedContent === 'ReportCreditUsed' && <ReportCreditUsed />}
-        {selectedContent === 'ListNameMaster' && <ListNameMaster />}
-        {selectedContent === 'GuardBalanceManage' && <GuardBalanceManage />}
-      </Box>
+      <ToggleButton
+        isExpanded={isExpanded}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        {isExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+      </ToggleButton>
     </Box>
   );
 }

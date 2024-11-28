@@ -17,8 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CachedIcon from "@mui/icons-material/Cached";
 
-import ReportCreditUsedTable from "../pages/ReportCreditUsedTable";
-import ListNameAgent from "../pages/ListNameAgent";
+import LoseWinAgentTransaction from "./LoseWinAgentTransaction";
 
 const UserName = "ผู้ใช้งาน";
 
@@ -56,32 +55,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function createData(
   order,
-  masterName,
+  agentName,
   agentCount,
   creditUsed,
   manageCredit,
   manage
 ) {
-  return { order, masterName, agentCount, creditUsed, manageCredit, manage };
+  return { order, agentName, agentCount, creditUsed, manageCredit, manage };
 }
 
 const rows = [
-  createData("1", "Master 1", 15, "200,000,000.00"),
-  createData("2", "Master 2", 3, "50,000,000.00"),
-  createData("3", "Master 3", 10, "80,000,000.00"),
+  createData("1", "Agent1.com"),
+  createData("2", "Agent2.com"),
+  createData("3", "Agent3.com"),
 ];
 
-function ReportCreditUsed() {
+function ManageGuardHolding() {
   const [selectedRow, setSelectedRow] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
 
   const handleViewClick = (row) => {
-    setSelectedRow({ id: row.masterName });
-  };
-
-  const [selectedRowAgent, setSelectedRowAgent] = useState(null); // เก็บข้อมูลของแถวที่ถูกเลือก
-
-  const handleViewClickAgent = (row) => {
-    setSelectedRowAgent({ id: row.masterName, active: row.agentCount });
+    setSelectedRow({ id: row.agentName });
   };
 
   return (
@@ -93,17 +86,12 @@ function ReportCreditUsed() {
         bgcolor: "background.paper",
       }}
     >
-      <Typography variant="h4">รายงานยอดการใช้เครดิต</Typography>
+      <Typography variant="h4">จัดการยอดถือสู้</Typography>
       {selectedRow ? (
-        <ReportCreditUsedTable
+        <LoseWinAgentTransaction
           id={selectedRow.id}
+          active={selectedRow.active}
           onBack={() => setSelectedRow(null)}
-        />
-      ) : selectedRowAgent ? (
-        <ListNameAgent
-          id={selectedRowAgent.id}
-          active={selectedRowAgent.active}
-          onBack={() => setSelectedRowAgent(null)}
         />
       ) : (
         <Box
@@ -139,13 +127,9 @@ function ReportCreditUsed() {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center">ลำดับ</StyledTableCell>
-                  <StyledTableCell align="center">ชื่อ Master</StyledTableCell>
-                  <StyledTableCell align="center">จำนวน Agent</StyledTableCell>
+                  <StyledTableCell align="center">ชื่อ Agent</StyledTableCell>
                   <StyledTableCell align="center">
-                    ยอดเครดิตที่ใช้ไป
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    รายงานการใช้เครดิต
+                    จัดการยอดถือสู้
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -156,29 +140,17 @@ function ReportCreditUsed() {
                       {row.order}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.masterName}
+                      {row.agentName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       <Button
                         variant="contained"
-                        // startIcon={<VisibilityIcon />}
-                        onClick={() => handleViewClickAgent(row)}
-                      >
-                        {row.agentCount}
-                      </Button>
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.creditUsed}
-                    </StyledTableCell>
-                    <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        startIcon={<VisibilityIcon />}
                         onClick={() => handleViewClick(row)}
+                        color="success"
                       >
-                        ดูรายงาน
+                        จัดการ
                       </Button>
-                    </TableCell>
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
@@ -190,4 +162,4 @@ function ReportCreditUsed() {
   );
 }
 
-export default ReportCreditUsed;
+export default ManageGuardHolding;

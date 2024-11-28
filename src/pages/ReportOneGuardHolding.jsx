@@ -88,7 +88,7 @@ const rows = [
   createData("Joker", "90%", "10%", 847200, 762480, 84720),
 ];
 
-function ReportCreditUsedTable({ id, onBack }) {
+function ReportOneGuardHolding({ id, onBack }) {
   // const [page, setPage] = React.useState(0);
   // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -261,4 +261,4 @@ function ReportCreditUsedTable({ id, onBack }) {
   );
 }
 
-export default ReportCreditUsedTable;
+export default ReportOneGuardHolding;
